@@ -7,7 +7,7 @@ import requests
 
 
 def init_logger(child_name: str = None) -> logging.Logger:
-    _logger = logging.getLogger("TwitterDMMemo")
+    _logger = logging.getLogger("WatchJCB")
     if child_name is not None:
         _logger = _logger.getChild(child_name)
     dt = datetime.datetime.now().date()
