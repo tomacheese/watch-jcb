@@ -10,6 +10,7 @@ function formatDate(dateRaw: string): string {
 async function main() {
   const config = loadConfig()
 
+  console.log('📡 Fetching campaigns...')
   const campaigns = await getCampaigns()
   const isFirst = Notified.isFirst()
 
@@ -17,6 +18,7 @@ async function main() {
   const newCampaigns = campaignInfos.filter((campaignInfo) => {
     return !Notified.isNotified(campaignInfo.eventCode)
   })
+  console.log(`📝 ${newCampaigns.length} new campaigns found.`)
 
   for (const campaignInfo of newCampaigns) {
     const {
@@ -61,5 +63,9 @@ async function main() {
 }
 
 ;(async () => {
-  await main()
+  await main().catch((error) => {
+    console.error(error)
+    // eslint-disable-next-line unicorn/no-process-exit
+    process.exit(1)
+  })
 })()
