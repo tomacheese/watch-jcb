@@ -29,8 +29,8 @@ WORKDIR /app
 COPY --from=builder /app/output .
 
 ENV NODE_ENV=production
-ENV CONFIG_FILE=/data/config.json
-ENV TOKEN_FILE=/data/token.json
+ENV CONFIG_PATH=/data/config.json
+ENV NOTIFIED_PATH=/data/notified.json
 
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
