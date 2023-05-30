@@ -62,10 +62,29 @@ export interface DiscordEmbed {
   fields?: DiscordEmbedField[]
 }
 
+async function activateCrosspost(config: Configuration, messageId: string) {
+  if (!config.discord.token || !config.discord.channel_id) {
+    return
+  }
+  await axios
+    .post(
+      `https://discord.com/api/channels/${config.discord.channel_id}/messages/${messageId}/crosspost`,
+      {},
+      {
+        headers: {
+          Authorization: `Bot ${config.discord.token}`,
+        },
+      }
+    )
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    .catch(() => {}) // ignore errors : don't care if crosspost fails
+}
+
 export async function sendDiscordMessage(
   config: Configuration,
   text: string,
-  embed?: DiscordEmbed
+  embed?: DiscordEmbed,
+  isCrosspost = false
 ): Promise<void> {
   // webhook or bot
   if (config.discord.webhook_url) {
@@ -95,6 +114,10 @@ export async function sendDiscordMessage(
     )
     if (response.status !== 200) {
       throw new Error(`Discord bot failed (${response.status})`)
+    }
+
+    if (isCrosspost) {
+      await activateCrosspost(config, response.data.id)
     }
   }
 }
