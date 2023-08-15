@@ -43,7 +43,7 @@ export interface JcbCampaign {
     },
     {
       campaignList: [CampaignList]
-    }
+    },
   ]
 }
 
@@ -78,7 +78,7 @@ export const isCampaignPickup = (x: any): x is CampaignPickup => {
     categoryName: typeof x.categoryName === 'string',
     campaignInfoIsArray: Array.isArray(x.campaignInfo),
     campaignInfoEvery: x.campaignInfo.every((element: any) =>
-      isCampaignInfo(element)
+      isCampaignInfo(element),
     ),
   }
   const checkResult = Object.values(checks).every(Boolean)
@@ -94,7 +94,7 @@ export const isCampaignList = (x: any): x is CampaignList => {
     categoryName: typeof x.categoryName === 'string',
     campaignInfoIsArray: Array.isArray(x.campaignInfo),
     campaignInfoEvery: x.campaignInfo.every((element: any) =>
-      isCampaignInfo(element)
+      isCampaignInfo(element),
     ),
   }
   const checkResult = Object.values(checks).every(Boolean)
@@ -111,15 +111,15 @@ export const isJcbCampaign = (x: any): x is JcbCampaign => {
     campaignObject0IsObject: typeof x.campaignObject[0] === 'object',
     campaignObject1IsObject: typeof x.campaignObject[1] === 'object',
     campaignObject0CampaignPickup: isCampaignPickup(
-      x.campaignObject[0].campaignPickup
+      x.campaignObject[0].campaignPickup,
     ),
     campaignObject1CampaignListIsArray: Array.isArray(
-      x.campaignObject[1].campaignList
+      x.campaignObject[1].campaignList,
     ),
     campaignObject1CampaignListLength:
       x.campaignObject[1].campaignList.length === 1,
     campaignObject1CampaignList0: isCampaignList(
-      x.campaignObject[1].campaignList[0]
+      x.campaignObject[1].campaignList[0],
     ),
   }
   const checkResult = Object.values(checks).every(Boolean)
