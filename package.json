@@ -26,7 +26,7 @@
     "fix:prettier": "prettier --write src"
   },
   "devDependencies": {
-    "@types/cheerio": "0.22.32",
+    "@types/cheerio": "0.22.33",
     "@types/jest": "29.5.5",
     "@types/node": "20.8.6",
     "@typescript-eslint/eslint-plugin": "6.8.0",
