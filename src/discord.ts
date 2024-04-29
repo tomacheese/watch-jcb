@@ -90,7 +90,7 @@ export async function sendDiscordMessage(
   if (config.discord.webhook_url) {
     // webhook
     const response = await axios.post(config.discord.webhook_url, {
-      content: `${text}`,
+      content: text,
       embeds: embed ? [embed] : undefined,
     })
     if (response.status !== 204) {
@@ -100,10 +100,12 @@ export async function sendDiscordMessage(
   }
   if (config.discord.token && config.discord.channel_id) {
     // bot
-    const response = await axios.post(
+    const response = await axios.post<{
+      id: string
+    }>(
       `https://discord.com/api/channels/${config.discord.channel_id}/messages`,
       {
-        content: `${text}`,
+        content: text,
         embeds: embed ? [embed] : undefined,
       },
       {
