@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import { PATH } from './config'
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Notified {
   public static isFirst(): boolean {
     const path = PATH.notified
@@ -9,7 +10,7 @@ export class Notified {
 
   public static isNotified(eventCode: string): boolean {
     const path = PATH.notified
-    const json = fs.existsSync(path)
+    const json: string[] = fs.existsSync(path)
       ? JSON.parse(fs.readFileSync(path, 'utf8'))
       : []
     return json.includes(eventCode)
@@ -17,7 +18,7 @@ export class Notified {
 
   public static addNotified(eventCode: string): void {
     const path = PATH.notified
-    const json = fs.existsSync(path)
+    const json: string[] = fs.existsSync(path)
       ? JSON.parse(fs.readFileSync(path, 'utf8'))
       : []
     json.push(eventCode)

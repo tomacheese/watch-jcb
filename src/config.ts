@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 
 export const PATH = {
-  config: process.env.CONFIG_PATH || 'data/config.json',
-  notified: process.env.NOTIFIED_PATH || 'data/notified.json',
+  config: process.env.CONFIG_PATH ?? 'data/config.json',
+  notified: process.env.NOTIFIED_PATH ?? 'data/notified.json',
 }
 
 export interface Configuration {
@@ -18,20 +18,30 @@ export interface Configuration {
 }
 
 const isConfig = (config: any): config is Configuration => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return (
     config &&
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     typeof config.discord === 'object' &&
     // webhook_url があるか token と channel_id があるか
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (config.discord.webhook_url ||
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       (config.discord.token && config.discord.channel_id)) &&
     // webhook_url があるとき、string である
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (config.discord.webhook_url === undefined ||
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       typeof config.discord.webhook_url === 'string') &&
     // token があるとき、string である
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (config.discord.token === undefined ||
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       typeof config.discord.token === 'string') &&
     // channel_id があるとき、string である
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (config.discord.channel_id === undefined ||
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       typeof config.discord.channel_id === 'string')
   )
 }
