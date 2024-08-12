@@ -97,7 +97,7 @@ export const isCampaignPickup = (x: any): x is CampaignPickup => {
     campaignInfoIsArray: Array.isArray(x.campaignInfo),
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     campaignInfoEvery: x.campaignInfo.every((element: any) =>
-      isCampaignInfo(element),
+      isCampaignInfo(element)
     ),
   }
   const checkResult = Object.values(checks).every(Boolean)
@@ -117,7 +117,7 @@ export const isCampaignList = (x: any): x is CampaignList => {
     campaignInfoIsArray: Array.isArray(x.campaignInfo),
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     campaignInfoEvery: x.campaignInfo.every((element: any) =>
-      isCampaignInfo(element),
+      isCampaignInfo(element)
     ),
   }
   const checkResult = Object.values(checks).every(Boolean)
@@ -139,18 +139,18 @@ export const isJcbCampaign = (x: any): x is JcbCampaign => {
     campaignObject1IsObject: typeof x.campaignObject[1] === 'object',
     campaignObject0CampaignPickup: isCampaignPickup(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      x.campaignObject[0].campaignPickup,
+      x.campaignObject[0].campaignPickup
     ),
     campaignObject1CampaignListIsArray: Array.isArray(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      x.campaignObject[1].campaignList,
+      x.campaignObject[1].campaignList
     ),
     campaignObject1CampaignListLength:
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       x.campaignObject[1].campaignList.length === 1,
     campaignObject1CampaignList0: isCampaignList(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      x.campaignObject[1].campaignList[0],
+      x.campaignObject[1].campaignList[0]
     ),
   }
   const checkResult = Object.values(checks).every(Boolean)
