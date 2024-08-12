@@ -41,9 +41,6 @@ importers:
       eslint-plugin-promise:
         specifier: 7.1.0
         version: 7.1.0(eslint@9.9.0)
-      eslint-plugin-unicorn:
-        specifier: 55.0.0
-        version: 55.0.0(eslint@9.9.0)
       iconv-lite:
         specifier: 0.6.3
         version: 0.6.3
