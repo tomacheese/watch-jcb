@@ -74,7 +74,7 @@ async function activateCrosspost(config: Configuration, messageId: string) {
         headers: {
           Authorization: `Bot ${config.discord.token}`,
         },
-      },
+      }
     )
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     .catch(() => {}) // ignore errors : don't care if crosspost fails
@@ -84,7 +84,7 @@ export async function sendDiscordMessage(
   config: Configuration,
   text: string,
   embed?: DiscordEmbed,
-  isCrosspost = false,
+  isCrosspost = false
 ): Promise<void> {
   // webhook or bot
   if (config.discord.webhook_url) {
@@ -112,7 +112,7 @@ export async function sendDiscordMessage(
         headers: {
           Authorization: `Bot ${config.discord.token}`,
         },
-      },
+      }
     )
     if (response.status !== 200) {
       throw new Error(`Discord bot failed (${response.status})`)
