@@ -1,16 +1,18 @@
 {
   "name": "watch-jcb",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-18",
+  "remoteUser": "node",
   "otherPortsAttributes": {
     "onAutoForward": "silent"
   },
-  "postCreateCommand": "pnpm install",
+  "postCreateCommand": "sudo npm uninstall -g pnpm yarn && sudo git config --system --add safe.directory ${containerWorkspaceFolder} && sudo chown node node_modules .pnpm-store && sudo npm install -g corepack@latest && sudo corepack enable && corepack install && pnpm install && pnpm approve-builds",
   "waitFor": "postCreateCommand",
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=pnpm-store,target=${containerWorkspaceFolder}/.pnpm-store,type=volume"
+  ],
   "customizations": {
     "vscode": {
-      "extensions": [
-        "esbenp.prettier-vscode"
-      ],
       "settings": {
         "git.branchProtection": [
           "main",
@@ -23,11 +25,11 @@
           },
           "editor.defaultFormatter": "esbenp.prettier-vscode"
         }
-      }
+      },
+      "extensions": [
+        "esbenp.prettier-vscode"
+      ]
     },
-    "extensions": [
-      "esbenp.prettier-vscode"
-    ],
     "settings": {
       "git.branchProtection": [
         "main",
@@ -40,6 +42,9 @@
         },
         "editor.defaultFormatter": "esbenp.prettier-vscode"
       }
-    }
+    },
+    "extensions": [
+      "esbenp.prettier-vscode"
+    ]
   }
 }
