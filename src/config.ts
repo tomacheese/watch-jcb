@@ -17,33 +17,25 @@ export interface Configuration {
   }
 }
 
-const isConfig = (config: any): config is Configuration => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return (
-    config &&
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    typeof config.discord === 'object' &&
-    // webhook_url があるか token と channel_id があるか
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    (config.discord.webhook_url ||
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      (config.discord.token && config.discord.channel_id)) &&
-    // webhook_url があるとき、string である
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    (config.discord.webhook_url === undefined ||
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      typeof config.discord.webhook_url === 'string') &&
-    // token があるとき、string である
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    (config.discord.token === undefined ||
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      typeof config.discord.token === 'string') &&
-    // channel_id があるとき、string である
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    (config.discord.channel_id === undefined ||
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      typeof config.discord.channel_id === 'string')
-  )
+const isConfig = (config: unknown): config is Configuration => {
+  if (!config || typeof config !== 'object') return false
+  const cfg = config as { discord?: unknown }
+  if (!cfg.discord || typeof cfg.discord !== 'object') return false
+  const discord = cfg.discord as {
+    webhook_url?: unknown
+    token?: unknown
+    channel_id?: unknown
+  }
+  if (
+    !(discord.webhook_url ?? (discord.token && discord.channel_id)) ||
+    (discord.webhook_url !== undefined &&
+      typeof discord.webhook_url !== 'string') ||
+    (discord.token !== undefined && typeof discord.token !== 'string') ||
+    (discord.channel_id !== undefined && typeof discord.channel_id !== 'string')
+  ) {
+    return false
+  }
+  return true
 }
 
 export function loadConfig(): Configuration {
