@@ -166,7 +166,7 @@ export async function getCampaigns(): Promise<JcbCampaign> {
     responseType: 'arraybuffer',
   })
   const result = decode(response.data, 'windows-31j')
-  const $ = cheerio.load(result, { decodeEntities: false })
+  const $ = cheerio.load(result)
   const jsonDataElement = $('input#jsonData')
   if (jsonDataElement.length === 0) {
     throw new Error('jsonData element not found')
