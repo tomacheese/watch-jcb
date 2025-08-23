@@ -40,7 +40,7 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-n": "17.21.3",
     "eslint-plugin-promise": "7.2.1",
-    "iconv-lite": "0.6.3",
+    "iconv-lite": "0.7.0",
     "jest": "30.0.5",
     "prettier": "3.6.2",
     "run-z": "2.1.0",
