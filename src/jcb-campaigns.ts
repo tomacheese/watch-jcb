@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
-import { decode } from 'iconv-lite'
+import iconv from 'iconv-lite'
 
 export interface CampaignInfo {
   campaignEndDate: string
@@ -165,7 +165,7 @@ export async function getCampaigns(): Promise<JcbCampaign> {
   const response = await axios.get('https://www.jcb.co.jp/campaign/', {
     responseType: 'arraybuffer',
   })
-  const result = decode(response.data, 'windows-31j')
+  const result = iconv.decode(response.data, 'windows-31j')
   const $ = cheerio.load(result)
   const jsonDataElement = $('input#jsonData')
   if (jsonDataElement.length === 0) {
