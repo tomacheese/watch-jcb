@@ -42,4 +42,9 @@ pnpm install
 ## ドキュメント更新
 
 ## リポジトリ固有
-- 目的: Notify new campaign information added to the [JCB Card campaign list page](https://www.jcb.co.jp/campaign/) via Discord.
+- 概要: Notify new campaign information added to the JCB Card campaign list page via Discord.
+- 主要言語: TypeScript
+- パッケージマネージャー: pnpm
+- 主なエントリポイント: `src/main.ts`
+- CI 定義: `.github/workflows/` を参照
+- 実行環境: `Dockerfile` と `docker-compose.yml` を使用
