@@ -29,7 +29,7 @@
     "fix": "run-z fix:prettier,fix:eslint"
   },
   "devDependencies": {
-    "@book000/eslint-config": "1.12.40",
+    "@book000/eslint-config": "1.12.41",
     "@types/cheerio": "1.0.0",
     "@types/jest": "30.0.0",
     "@types/node": "25.0.10",
