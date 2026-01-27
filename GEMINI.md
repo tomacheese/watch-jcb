@@ -51,4 +51,4 @@ pnpm fix
 
 ## リポジトリ固有
 - スクレイピング対象のサイト構造の変化に注意が必要。
-- 文字コード (Shift_JIS) の扱いに `iconv-lite` を使用している。
+- 文字コード (Shift_JIS (windows-31j)) の扱いに `iconv-lite` を使用している。

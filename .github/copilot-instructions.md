@@ -44,7 +44,7 @@ pnpm generate-schema
 
 ## コーディング規約
 - TypeScript の `skipLibCheck` を有効にして回避しない。
-- 関数やインターフェースには JSDoc 形式の docstring を日本語で記載する。
+- 関数やインターフェースには JSDoc 形式の docstring を英語で記載する（既存コードの慣習に従う）。
 - 既存の命名規則やコード構造を尊重する。
 
 ## テスト方針
@@ -59,5 +59,5 @@ pnpm generate-schema
 - 設定項目の変更時には `schema/Configuration.json` を更新 (`pnpm generate-schema`) し、必要に応じて `README.md` を更新する。
 
 ## リポジトリ固有
-- JCB のサイトは Shift_JIS でエンコードされている場合があるため、`iconv-lite` を使用して適切にデコードする。
+- JCB のサイトは Shift_JIS (windows-31j) でエンコードされているため、`iconv-lite` を使用して適切にデコードする。
 - 通知済みのキャンペーンは `data/notified.json` (デフォルト) で管理される。
