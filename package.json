@@ -33,7 +33,7 @@
     "@types/cheerio": "1.0.0",
     "@types/jest": "30.0.0",
     "@types/node": "25.0.10",
-    "axios": "1.13.3",
+    "axios": "1.13.4",
     "cheerio": "1.2.0",
     "eslint": "9.39.2",
     "eslint-config-standard": "17.1.0",
