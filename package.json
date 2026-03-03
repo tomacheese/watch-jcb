@@ -32,7 +32,7 @@
     "@book000/eslint-config": "1.13.10",
     "@types/cheerio": "1.0.0",
     "@types/jest": "30.0.0",
-    "@types/node": "25.3.2",
+    "@types/node": "25.3.3",
     "axios": "1.13.6",
     "cheerio": "1.2.0",
     "eslint": "10.0.2",
