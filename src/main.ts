@@ -63,8 +63,8 @@ async function main() {
 }
 
 ;(async () => {
-  await main().catch((error: unknown) => {
-    console.error(error)
+  await main().catch((err: unknown) => {
+    console.error(err)
     // eslint-disable-next-line unicorn/no-process-exit
     process.exit(1)
   })
