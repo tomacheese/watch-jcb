@@ -161,9 +161,14 @@ export const isJcbCampaign = (x: any): x is JcbCampaign => {
 
 export async function getCampaigns(): Promise<JcbCampaign> {
   // windows-31j
-  const response = await fetch('https://www.jcb.co.jp/campaign/')
+  const url = 'https://www.jcb.co.jp/campaign/'
+  const response = await fetch(url)
   if (!response.ok) {
-    throw new Error(`HTTP error: ${response.status}`)
+    const responseBody = await response.text()
+    const responsePreview = responseBody.slice(0, 200)
+    throw new Error(
+      `HTTP error: ${response.status} ${response.statusText} (${url})${responsePreview.length > 0 ? ` - Response preview: ${responsePreview}` : ''}`
+    )
   }
   const arrayBuffer = await response.arrayBuffer()
   const result = iconv.decode(Buffer.from(arrayBuffer), 'windows-31j')

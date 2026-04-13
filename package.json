@@ -32,15 +32,9 @@
     "@book000/eslint-config": "1.14.9",
     "@types/cheerio": "1.0.0",
     "@types/jest": "30.0.0",
-<<<<<<< HEAD
     "@types/node": "25.6.0",
-    "axios": "1.15.0",
-||||||| parent of 839d408 (refactor: axios から fetch に移行する)
     "@types/node": "25.5.2",
-    "axios": "1.15.0",
-=======
     "@types/node": "25.5.2",
->>>>>>> 839d408 (refactor: axios から fetch に移行する)
     "cheerio": "1.2.0",
     "eslint": "10.2.0",
     "eslint-config-standard": "17.1.0",

@@ -118,12 +118,13 @@ export async function sendDiscordMessage(
       }
     )
     if (response.status !== 200) {
+      await response.text()
       throw new Error(`Discord bot failed (${response.status})`)
     }
 
+    const responseData = (await response.json()) as { id: string }
     if (isCrosspost) {
-      const data = (await response.json()) as { id: string }
-      await activateCrosspost(config, data.id)
+      await activateCrosspost(config, responseData.id)
     }
   }
 }
