@@ -1,4 +1,3 @@
-import axios from 'axios'
 import * as cheerio from 'cheerio'
 import iconv from 'iconv-lite'
 
@@ -162,10 +161,12 @@ export const isJcbCampaign = (x: any): x is JcbCampaign => {
 
 export async function getCampaigns(): Promise<JcbCampaign> {
   // windows-31j
-  const response = await axios.get('https://www.jcb.co.jp/campaign/', {
-    responseType: 'arraybuffer',
-  })
-  const result = iconv.decode(response.data, 'windows-31j')
+  const response = await fetch('https://www.jcb.co.jp/campaign/')
+  if (!response.ok) {
+    throw new Error(`HTTP error: ${response.status}`)
+  }
+  const arrayBuffer = await response.arrayBuffer()
+  const result = iconv.decode(Buffer.from(arrayBuffer), 'windows-31j')
   const $ = cheerio.load(result)
   const jsonDataElement = $('input#jsonData')
   if (jsonDataElement.length === 0) {
