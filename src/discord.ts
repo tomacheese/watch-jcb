@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { Configuration } from './config'
 
 export interface DiscordEmbedFooter {
@@ -66,18 +65,18 @@ async function activateCrosspost(config: Configuration, messageId: string) {
   if (!config.discord.token || !config.discord.channel_id) {
     return
   }
-  await axios
-    .post(
-      `https://discord.com/api/channels/${config.discord.channel_id}/messages/${messageId}/crosspost`,
-      {},
-      {
-        headers: {
-          Authorization: `Bot ${config.discord.token}`,
-        },
-      }
-    )
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    .catch(() => {}) // ignore errors : don't care if crosspost fails
+  // ignore errors : don't care if crosspost fails
+  await fetch(
+    `https://discord.com/api/channels/${config.discord.channel_id}/messages/${messageId}/crosspost`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bot ${config.discord.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    }
+  ).catch(() => undefined)
 }
 
 export async function sendDiscordMessage(
@@ -89,9 +88,13 @@ export async function sendDiscordMessage(
   // webhook or bot
   if (config.discord.webhook_url) {
     // webhook
-    const response = await axios.post(config.discord.webhook_url, {
-      content: text,
-      embeds: embed ? [embed] : undefined,
+    const response = await fetch(config.discord.webhook_url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: text,
+        embeds: embed ? [embed] : undefined,
+      }),
     })
     if (response.status !== 204) {
       throw new Error(`Discord webhook failed (${response.status})`)
@@ -100,26 +103,28 @@ export async function sendDiscordMessage(
   }
   if (config.discord.token && config.discord.channel_id) {
     // bot
-    const response = await axios.post<{
-      id: string
-    }>(
+    const response = await fetch(
       `https://discord.com/api/channels/${config.discord.channel_id}/messages`,
       {
-        content: text,
-        embeds: embed ? [embed] : undefined,
-      },
-      {
+        method: 'POST',
         headers: {
           Authorization: `Bot ${config.discord.token}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          content: text,
+          embeds: embed ? [embed] : undefined,
+        }),
       }
     )
     if (response.status !== 200) {
+      await response.text()
       throw new Error(`Discord bot failed (${response.status})`)
     }
 
+    const responseData = (await response.json()) as { id: string }
     if (isCrosspost) {
-      await activateCrosspost(config, response.data.id)
+      await activateCrosspost(config, responseData.id)
     }
   }
 }
