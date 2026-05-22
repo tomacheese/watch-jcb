@@ -26,6 +26,7 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "newLine": "LF",
+    "types": ["node", "jest"],
     "paths": {
       "@/*": ["src/*"]
     }
