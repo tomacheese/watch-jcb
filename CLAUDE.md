@@ -58,7 +58,7 @@ pnpm fix
 ```
 
 ## アーキテクチャと主要ファイル
-- `src/main.ts`: エントリーポイント。設定の読み込みと実行ループの管理。
+- `src/main.ts`: エントリーポイント。設定読み込み・キャンペーン取得・新着判定・Discord 通知を 1 回実行する（定期実行のループは `entrypoint.sh` 側）。
 - `src/jcb-campaigns.ts`: JCB キャンペーンサイトのスクレイピングロジック。
 - `src/discord.ts`: Discord への通知処理。
 - `src/config.ts`: 設定の定義と読み込み。
