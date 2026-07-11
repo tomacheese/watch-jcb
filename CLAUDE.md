@@ -36,11 +36,6 @@ Git Worktree を使用する場合、以下の構成とする：
 - TypeScript の `skipLibCheck` 禁止。
 - 関数やインターフェースには JSDoc を英語で記載する（既存コードの慣習に従う）。
 
-## 相談ルール
-- 実装レビューや局所設計の相談は Codex CLI (グローバル CLAUDE.md で定義) に行う。
-- 外部仕様や最新情報の確認は Gemini CLI に行う。
-- 指摘への対応を黙殺しない。
-
 ## 開発コマンド
 ```bash
 # インストール
@@ -63,7 +58,7 @@ pnpm fix
 ```
 
 ## アーキテクチャと主要ファイル
-- `src/main.ts`: エントリーポイント。設定の読み込みと実行ループの管理。
+- `src/main.ts`: エントリーポイント。設定読み込み・キャンペーン取得・新着判定・Discord 通知を 1 回実行する（定期実行のループは `entrypoint.sh` 側）。
 - `src/jcb-campaigns.ts`: JCB キャンペーンサイトのスクレイピングロジック。
 - `src/discord.ts`: Discord への通知処理。
 - `src/config.ts`: 設定の定義と読み込み。
@@ -71,9 +66,15 @@ pnpm fix
 - `schema/Configuration.json`: 設定ファイルの JSON Schema。
 
 ## 実装パターン
-- キャンペーン情報の取得には `cheerio` を使用。
-- 文字エンコーディングの変換には `iconv-lite` を使用。
+- HTTP 取得には Node.js 標準の `fetch` を使用（`axios` 等の HTTP クライアントは導入していない）。
+- キャンペーン情報の HTML パースには `cheerio` を使用。
+- JCB のサイトは Shift_JIS (`windows-31j`) でエンコードされているため、`iconv-lite` でデコードする。
 - 設定はシングルトン的に扱うのではなく、必要に応じて渡すか明示的に読み込む。
+- スクレイピング対象サイトの構造変更に弱いため、セレクタ変更時は `src/jcb-campaigns.test.ts` で挙動を確認する。
+
+## セキュリティ / 機密情報
+- API キーや Discord Webhook URL などの機密情報はコードに直接記述せず、設定ファイル (`data/config.json`) または環境変数で管理する。
+- 設定ファイルやログに機密情報を出力・コミットしない。
 
 ## テスト
 - `jest` を使用。

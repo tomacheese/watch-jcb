@@ -1,63 +1,34 @@
 # GitHub Copilot Instructions
 
-## プロジェクト概要
-- 目的: JCB カードのキャンペーン情報を監視し、新着情報を Discord に通知する
-- 主な機能: JCB キャンペーン一覧ページのスクレイピング、新着判定、Discord 通知
-- 対象ユーザー: JCB カード利用者
+GitHub Copilot のコードレビュー機能向けの指示です。以下の観点でレビューしてください。
 
-## 共通ルール
-- 会話は日本語で行う。
-- PR とコミットは Conventional Commits に従い、`<description>` は日本語で記載する。
-- 日本語と英数字の間には半角スペースを入れる。
+## プロジェクト概要
+- JCB カードのキャンペーン一覧ページをスクレイピングし、新着キャンペーンを Discord に通知するツール。
+- TypeScript / Node.js (tsx 実行) / Docker で動作。
 
 ## 技術スタック
 - 言語: TypeScript
-- 実行環境: Node.js (tsx), Docker
-- パッケージマネージャー: pnpm
-- ライブラリ: axios, cheerio, iconv-lite
-- テスト: Jest, ts-jest
-- リンター/フォーマッタ: ESLint, Prettier
+- パッケージマネージャー: pnpm（npm/yarn は不可。`preinstall` で pnpm を強制）
+- HTTP 取得: Node.js 標準の `fetch`（`axios` 等の HTTP クライアントは未使用）
+- HTML パース: `cheerio`
+- 文字コード変換: `iconv-lite`（JCB サイトは Shift_JIS / `windows-31j`）
+- テスト: Jest (`ts-jest`)
+- Lint/Format: ESLint, Prettier
 
-## 開発コマンド
-```bash
-# 依存関係のインストール
-pnpm install
+## レビュー観点
+- スクレイピング (`src/jcb-campaigns.ts`) のセレクタやエンコーディング処理の変更は、サイト構造変更で壊れやすい。テスト (`src/jcb-campaigns.test.ts`) の追随を確認する。
+- 非同期処理は `async/await` を使用する（新規の `.then()` チェーンは既存の慣習と不整合）。
+- エラーハンドリングの欠落（ネットワーク失敗、パース失敗、Discord 通知失敗）を確認する。
+- `data/config.json` 相当の設定は JSON Schema (`schema/Configuration.json`) と対応する。設定構造の変更時に `pnpm generate-schema` の実行漏れがないか確認する。
 
-# 開発実行 (ウォッチモード)
-pnpm dev
+## コーディング規約（lint/formatter で強制）
+- Prettier / ESLint (`@book000/eslint-config`) に準拠する。
+- 関数やインターフェースには英語の JSDoc を記載する（既存コードの慣習）。
+- TypeScript の `skipLibCheck` を有効化して型エラーを回避しない。
 
-# 通常実行
-pnpm start
+## セキュリティ
+- API キーや Discord Webhook URL などの機密情報を、コード・設定ファイル・ログにハードコードまたはコミットしていないか確認する。
 
-# テスト実行
-pnpm test
-
-# リンター実行
-pnpm lint
-
-# 自動修正実行
-pnpm fix
-
-# JSON スキーマ生成
-pnpm generate-schema
-```
-
-## コーディング規約
-- TypeScript の `skipLibCheck` を有効にして回避しない。
-- 関数やインターフェースには JSDoc 形式の docstring を英語で記載する（既存コードの慣習に従う）。
-- 既存の命名規則やコード構造を尊重する。
-
-## テスト方針
-- テストフレームワーク: Jest
-- 新機能の追加やバグ修正時には、対応するテストを追加・更新する。
-
-## セキュリティ / 機密情報
-- API キーや Webhook URL などの機密情報は直接コードに記述せず、設定ファイル (`data/config.json`) や環境変数で管理する。
-- ログに機密情報を出力しない。
-
-## ドキュメント更新
-- 設定項目の変更時には `schema/Configuration.json` を更新 (`pnpm generate-schema`) し、必要に応じて `README.md` を更新する。
-
-## リポジトリ固有
-- JCB のサイトは Shift_JIS (windows-31j) でエンコードされているため、`iconv-lite` を使用して適切にデコードする。
-- 通知済みのキャンペーンは `data/notified.json` (デフォルト) で管理される。
+## コミット / PR
+- Conventional Commits に従い、`<description>` は日本語で記載する。
+- 日本語と英数字の間には半角スペースを入れる。
