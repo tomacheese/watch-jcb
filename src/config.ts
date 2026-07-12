@@ -5,7 +5,7 @@ export const PATH = {
   notified: process.env.NOTIFIED_PATH ?? 'data/notified.json',
 }
 
-export interface Configuration {
+export interface Config {
   /** Discord webhook URL or bot token */
   discord: {
     /** Discord webhook URL (required if using webhook) */
@@ -17,28 +17,25 @@ export interface Configuration {
   }
 }
 
-const isConfig = (config: unknown): config is Configuration => {
+const isConfig = (config: unknown): config is Config => {
   if (!config || typeof config !== 'object') return false
-  const cfg = config as { discord?: unknown }
-  if (!cfg.discord || typeof cfg.discord !== 'object') return false
-  const discord = cfg.discord as {
+  const config_ = config as { discord?: unknown }
+  if (!config_.discord || typeof config_.discord !== 'object') return false
+  const discord = config_.discord as {
     webhook_url?: unknown
     token?: unknown
     channel_id?: unknown
   }
-  if (
+  return !(
     !(discord.webhook_url ?? (discord.token && discord.channel_id)) ||
     (discord.webhook_url !== undefined &&
       typeof discord.webhook_url !== 'string') ||
     (discord.token !== undefined && typeof discord.token !== 'string') ||
     (discord.channel_id !== undefined && typeof discord.channel_id !== 'string')
-  ) {
-    return false
-  }
-  return true
+  )
 }
 
-export function loadConfig(): Configuration {
+export function loadConfig(): Config {
   if (!fs.existsSync(PATH.config)) {
     throw new Error('Config file not found')
   }

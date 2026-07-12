@@ -15,7 +15,7 @@
     "url": "git@github.com:tomacheese/watch-jcb.git"
   },
   "scripts": {
-    "generate-schema": "typescript-json-schema --required tsconfig.json Configuration -o schema/Configuration.json",
+    "generate-schema": "typescript-json-schema --required tsconfig.json Config -o schema/Configuration.json",
     "test": "jest",
     "lint:prettier": "prettier --check src",
     "lint:eslint": "eslint . -c eslint.config.mjs",

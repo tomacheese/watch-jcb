@@ -1,4 +1,4 @@
-import { Configuration } from './config'
+import { Config } from './config'
 
 export interface DiscordEmbedFooter {
   text: string
@@ -61,26 +61,30 @@ export interface DiscordEmbed {
   fields?: DiscordEmbedField[]
 }
 
-async function activateCrosspost(config: Configuration, messageId: string) {
+async function activateCrosspost(config: Config, messageId: string) {
   if (!config.discord.token || !config.discord.channel_id) {
     return
   }
-  // ignore errors : don't care if crosspost fails
-  await fetch(
-    `https://discord.com/api/channels/${config.discord.channel_id}/messages/${messageId}/crosspost`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bot ${config.discord.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    }
-  ).catch(() => undefined)
+  try {
+    // ignore errors : don't care if crosspost fails
+    await fetch(
+      `https://discord.com/api/channels/${config.discord.channel_id}/messages/${messageId}/crosspost`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bot ${config.discord.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      }
+    )
+  } catch {
+    // ignore errors : don't care if crosspost fails
+  }
 }
 
 export async function sendDiscordMessage(
-  config: Configuration,
+  config: Config,
   text: string,
   embed?: DiscordEmbed,
   isCrosspost = false

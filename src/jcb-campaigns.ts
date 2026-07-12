@@ -79,11 +79,11 @@ export const isCampaignInfo = (x: any): x is CampaignInfo => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     tagWords: typeof x.tagWords === 'string',
   }
-  const checkResult = Object.values(checks).every(Boolean)
-  if (!checkResult) {
+  const isValid = Object.values(checks).every(Boolean)
+  if (!isValid) {
     console.log('isCampaignInfo', checks)
   }
-  return checkResult
+  return isValid
 }
 
 export const isCampaignPickup = (x: any): x is CampaignPickup => {
@@ -99,11 +99,11 @@ export const isCampaignPickup = (x: any): x is CampaignPickup => {
       isCampaignInfo(element)
     ),
   }
-  const checkResult = Object.values(checks).every(Boolean)
-  if (!checkResult) {
+  const isValid = Object.values(checks).every(Boolean)
+  if (!isValid) {
     console.log('isCampaignPickup', checks)
   }
-  return checkResult
+  return isValid
 }
 
 export const isCampaignList = (x: any): x is CampaignList => {
@@ -119,11 +119,11 @@ export const isCampaignList = (x: any): x is CampaignList => {
       isCampaignInfo(element)
     ),
   }
-  const checkResult = Object.values(checks).every(Boolean)
-  if (!checkResult) {
+  const isValid = Object.values(checks).every(Boolean)
+  if (!isValid) {
     console.log('isCampaignList', checks)
   }
-  return checkResult
+  return isValid
 }
 
 export const isJcbCampaign = (x: any): x is JcbCampaign => {
@@ -152,11 +152,11 @@ export const isJcbCampaign = (x: any): x is JcbCampaign => {
       x.campaignObject[1].campaignList[0]
     ),
   }
-  const checkResult = Object.values(checks).every(Boolean)
-  if (!checkResult) {
+  const isValid = Object.values(checks).every(Boolean)
+  if (!isValid) {
     console.log('isJcbCampaign', checks)
   }
-  return checkResult
+  return isValid
 }
 
 export async function getCampaigns(): Promise<JcbCampaign> {
