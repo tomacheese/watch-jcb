@@ -26,16 +26,13 @@ const isConfig = (config: unknown): config is Configuration => {
     token?: unknown
     channel_id?: unknown
   }
-  if (
+  return !(
     !(discord.webhook_url ?? (discord.token && discord.channel_id)) ||
     (discord.webhook_url !== undefined &&
       typeof discord.webhook_url !== 'string') ||
     (discord.token !== undefined && typeof discord.token !== 'string') ||
     (discord.channel_id !== undefined && typeof discord.channel_id !== 'string')
-  ) {
-    return false
-  }
-  return true
+  )
 }
 
 export function loadConfig(): Configuration {
