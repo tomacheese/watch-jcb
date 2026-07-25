@@ -1,7 +1,10 @@
+import { Logger } from '@book000/node-utils'
 import { loadConfig } from './config'
 import { DiscordEmbed, sendDiscordMessage } from './discord'
 import { getCampaigns } from './jcb-campaigns'
 import { Notified } from './notified'
+
+const logger = Logger.configure('main')
 
 function formatDate(dateRaw: string): string {
   return `${dateRaw.slice(0, 4)}/${dateRaw.slice(4, 6)}/${dateRaw.slice(6, 8)}`
@@ -10,7 +13,7 @@ function formatDate(dateRaw: string): string {
 async function main() {
   const config = loadConfig()
 
-  console.log('📡 Fetching campaigns...')
+  logger.info('📡 Fetching campaigns...')
   const campaigns = await getCampaigns()
   const isFirst = Notified.isFirst()
 
@@ -18,7 +21,7 @@ async function main() {
   const newCampaigns = campaignInfos.filter((campaignInfo) => {
     return !Notified.isNotified(campaignInfo.eventCode)
   })
-  console.log(`📝 ${newCampaigns.length} new campaigns found.`)
+  logger.info(`📝 ${newCampaigns.length} new campaigns found.`)
 
   for (const campaignInfo of newCampaigns) {
     const {
@@ -33,7 +36,12 @@ async function main() {
     const startDate = formatDate(startDateRaw)
     const endDate = formatDate(endDateRaw)
 
-    console.log(name, url, startDate, endDate, needEntry)
+    logger.info(`📤 Notifying campaign: ${name}`, {
+      url,
+      startDate,
+      endDate,
+      needEntry,
+    })
 
     const embed: DiscordEmbed = {
       title: name,
@@ -64,7 +72,10 @@ async function main() {
 
 ;(async () => {
   await main().catch((error: unknown) => {
-    console.error(error)
+    logger.error(
+      '❌ Unexpected error occurred.',
+      error instanceof Error ? error : new Error(String(error))
+    )
     // eslint-disable-next-line unicorn/no-process-exit
     process.exit(1)
   })
