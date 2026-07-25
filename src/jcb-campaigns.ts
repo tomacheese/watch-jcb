@@ -1,5 +1,8 @@
+import { Logger } from '@book000/node-utils'
 import * as cheerio from 'cheerio'
 import iconv from 'iconv-lite'
+
+const logger = Logger.configure('jcb-campaigns')
 
 export interface CampaignInfo {
   campaignEndDate: string
@@ -81,7 +84,7 @@ export const isCampaignInfo = (x: any): x is CampaignInfo => {
   }
   const checkResult = Object.values(checks).every(Boolean)
   if (!checkResult) {
-    console.log('isCampaignInfo', checks)
+    logger.debug('isCampaignInfo', checks)
   }
   return checkResult
 }
@@ -101,7 +104,7 @@ export const isCampaignPickup = (x: any): x is CampaignPickup => {
   }
   const checkResult = Object.values(checks).every(Boolean)
   if (!checkResult) {
-    console.log('isCampaignPickup', checks)
+    logger.debug('isCampaignPickup', checks)
   }
   return checkResult
 }
@@ -121,7 +124,7 @@ export const isCampaignList = (x: any): x is CampaignList => {
   }
   const checkResult = Object.values(checks).every(Boolean)
   if (!checkResult) {
-    console.log('isCampaignList', checks)
+    logger.debug('isCampaignList', checks)
   }
   return checkResult
 }
@@ -154,7 +157,7 @@ export const isJcbCampaign = (x: any): x is JcbCampaign => {
   }
   const checkResult = Object.values(checks).every(Boolean)
   if (!checkResult) {
-    console.log('isJcbCampaign', checks)
+    logger.debug('isJcbCampaign', checks)
   }
   return checkResult
 }
