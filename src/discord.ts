@@ -101,30 +101,32 @@ export async function sendDiscordMessage(
     }
     return
   }
-  if (config.discord.token && config.discord.channel_id) {
-    // bot
-    const response = await fetch(
-      `https://discord.com/api/channels/${config.discord.channel_id}/messages`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bot ${config.discord.token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: text,
-          embeds: embed ? [embed] : undefined,
-        }),
-      }
-    )
-    if (response.status !== 200) {
-      await response.text()
-      throw new Error(`Discord bot failed (${response.status})`)
-    }
+  if (!config.discord.token || !config.discord.channel_id) {
+    return
+  }
 
-    const responseData = (await response.json()) as { id: string }
-    if (isCrosspost) {
-      await activateCrosspost(config, responseData.id)
+  // bot
+  const response = await fetch(
+    `https://discord.com/api/channels/${config.discord.channel_id}/messages`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bot ${config.discord.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: text,
+        embeds: embed ? [embed] : undefined,
+      }),
     }
+  )
+  if (response.status !== 200) {
+    await response.text()
+    throw new Error(`Discord bot failed (${response.status})`)
+  }
+
+  const responseData = (await response.json()) as { id: string }
+  if (isCrosspost) {
+    await activateCrosspost(config, responseData.id)
   }
 }
