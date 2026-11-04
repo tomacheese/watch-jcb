@@ -6,13 +6,13 @@ export const PATH = {
 }
 
 export interface Configuration {
-  /** Discord webhook URL or bot token */
+  /** Discord の Webhook URL または Bot トークン */
   discord: {
-    /** Discord webhook URL (required if using webhook) */
+    /** Discord の Webhook URL (Webhook を使う場合は必須) */
     webhook_url?: string
-    /** Discord bot token (required if using bot) */
+    /** Discord の Bot トークン (Bot を使う場合は必須) */
     token?: string
-    /** Discord channel ID (required if using bot) */
+    /** Discord のチャンネル ID (Bot を使う場合は必須) */
     channel_id?: string
   }
 }

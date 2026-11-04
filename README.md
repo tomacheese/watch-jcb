@@ -1,14 +1,14 @@
 # watch-jcb
 
-Notify new campaign information added to the [JCB Card campaign list page](https://www.jcb.co.jp/campaign/) via Discord.
+[JCB カードのキャンペーン一覧ページ](https://www.jcb.co.jp/campaign/)に追加された新着キャンペーン情報を、Discord に通知するツールです。
 
-## Installation
+## インストール
 
-Works in Node.js or Docker (Compose) environment.
+Docker (Compose) または Node.js 環境で動作します。
 
-### Docker (Recommended)
+### Docker (推奨)
 
-If you want to use Docker, write the following in `docker-compose.yml`:
+`docker-compose.yml` に次のように記述します。
 
 ```yaml
 version: '3.8'
@@ -23,28 +23,38 @@ services:
     restart: always
 ```
 
-After that, you can start it with `docker-compose up -d` after creating a configuration file with reference to [Configuration section](#configuration).
+[設定](#設定)を参考に `data/config.json` を作成したあと、`docker compose up -d` で起動できます。コンテナ内では 10 分間隔でキャンペーンを確認します。
 
 ### Node.js
 
-If you are running in a Node.js environment, Node.js v18 is recommended.
+`.node-version` に記載のバージョンの Node.js と pnpm が必要です。
 
-Download and extract `watch-jcb_vX.Y.Z.zip` from the [release page](https://github.com/tomacheese/watch-jcb/releases) in the latest release.  
-After that, you can start it with `node index.js` after creating a configuration file with reference to [Configuration section](#configuration).
+```bash
+pnpm install
+pnpm start
+```
 
-## Configuration
+`pnpm start` は 1 回だけ確認して終了します。定期的に実行する場合は cron などから呼び出してください。
 
-The configuration file `data/config.json` is used by default.  
-If the environment variable `CONFIG_FILE` is set, the specified value is taken as the path to the configuration file.
+## 設定
 
-See here for the JSON Schema of the configuration file: [schema/Configuration.json](schema/Configuration.json)
+既定では `data/config.json` を設定ファイルとして使用します。環境変数 `CONFIG_PATH` を設定すると、その値を設定ファイルのパスとして使用します。
+
+通知済みのキャンペーンは `data/notified.json` に記録されます。環境変数 `NOTIFIED_PATH` でパスを変更できます。初回実行時は通知せず、その時点のキャンペーンを通知済みとして記録します。
+
+設定ファイルの JSON Schema は [schema/Configuration.json](schema/Configuration.json) を参照してください。Webhook か Bot のどちらかを設定します。
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/tomacheese/watch-jcb/master/schema/Configuration.json"
+  "$schema": "https://raw.githubusercontent.com/tomacheese/watch-jcb/master/schema/Configuration.json",
+  "discord": {
+    "webhook_url": "https://discord.com/api/webhooks/..."
+  }
 }
 ```
 
-## License
+Bot を使う場合は `token` と `channel_id` を指定します。通知後にクロスポストを常に試行します (アナウンスチャンネル以外などで失敗しても無視されます)。
 
-The license for this project is [MIT License](LICENSE).
+## ライセンス
+
+このプロジェクトのライセンスは [MIT License](LICENSE) です。
