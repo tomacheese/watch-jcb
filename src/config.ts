@@ -5,16 +5,19 @@ export const PATH = {
   notified: process.env.NOTIFIED_PATH ?? 'data/notified.json',
 }
 
+interface DiscordFields {
+  /** @minLength 1 */
+  webhook_url?: string
+  /** @minLength 1 */
+  token?: string
+  /** @minLength 1 */
+  channel_id?: string
+}
+
 export interface Configuration {
-  /** Discord の Webhook URL または Bot トークン */
-  discord: {
-    /** Discord の Webhook URL (Webhook を使う場合は必須) */
-    webhook_url?: string
-    /** Discord の Bot トークン (Bot を使う場合は必須) */
-    token?: string
-    /** Discord のチャンネル ID (Bot を使う場合は必須) */
-    channel_id?: string
-  }
+  /** Discord の通知先 */
+  discord: DiscordFields &
+    ({ webhook_url: string } | { token: string; channel_id: string })
 }
 
 const isConfig = (config: unknown): config is Configuration => {
@@ -26,12 +29,13 @@ const isConfig = (config: unknown): config is Configuration => {
     token?: unknown
     channel_id?: unknown
   }
-  return !(
-    !(discord.webhook_url ?? (discord.token && discord.channel_id)) ||
-    (discord.webhook_url !== undefined &&
-      typeof discord.webhook_url !== 'string') ||
-    (discord.token !== undefined && typeof discord.token !== 'string') ||
-    (discord.channel_id !== undefined && typeof discord.channel_id !== 'string')
+  return (
+    [discord.webhook_url, discord.token, discord.channel_id].every(
+      (value) =>
+        value === undefined || (typeof value === 'string' && value.length > 0)
+    ) &&
+    (Boolean(discord.webhook_url) ||
+      Boolean(discord.token && discord.channel_id))
   )
 }
 
