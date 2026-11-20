@@ -33,6 +33,7 @@
     "@types/cheerio": "1.0.0",
     "@types/jest": "30.0.0",
     "@types/node": "26.6.6",
+    "ajv": "6.15.0",
     "cheerio": "1.2.0",
     "eslint": "10.15.0",
     "eslint-config-standard": "17.1.0",

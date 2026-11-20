@@ -42,7 +42,7 @@ pnpm start
 
 通知済みのキャンペーンは `data/notified.json` に記録されます。環境変数 `NOTIFIED_PATH` でパスを変更できます。初回実行時は通知せず、その時点のキャンペーンを通知済みとして記録します。
 
-設定ファイルの JSON Schema は [schema/Configuration.json](schema/Configuration.json) を参照してください。Webhook か Bot のどちらかを設定します。
+設定ファイルの JSON Schema は [schema/Configuration.json](schema/Configuration.json) を参照してください。Webhook URL または Bot のトークンとチャンネル ID の組み合わせを設定します。指定する各値は空文字列にできません。
 
 ```json
 {

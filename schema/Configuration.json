@@ -1,23 +1,69 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "properties": {
-        "discord": {
-            "description": "Discord の Webhook URL または Bot トークン",
+    "definitions": {
+        "DiscordFields": {
             "properties": {
                 "channel_id": {
-                    "description": "Discord のチャンネル ID (Bot を使う場合は必須)",
+                    "minLength": 1,
                     "type": "string"
                 },
                 "token": {
-                    "description": "Discord の Bot トークン (Bot を使う場合は必須)",
+                    "minLength": 1,
                     "type": "string"
                 },
                 "webhook_url": {
-                    "description": "Discord の Webhook URL (Webhook を使う場合は必須)",
+                    "minLength": 1,
                     "type": "string"
                 }
             },
             "type": "object"
+        }
+    },
+    "properties": {
+        "discord": {
+            "anyOf": [
+                {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/DiscordFields"
+                        },
+                        {
+                            "properties": {
+                                "webhook_url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "webhook_url"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
+                {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/DiscordFields"
+                        },
+                        {
+                            "properties": {
+                                "channel_id": {
+                                    "type": "string"
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "channel_id",
+                                "token"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                }
+            ],
+            "description": "Discord の通知先"
         }
     },
     "required": [
