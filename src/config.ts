@@ -6,16 +6,28 @@ export const PATH = {
 }
 
 interface DiscordFields {
-  /** @minLength 1 */
+  /**
+   * Discord の Webhook URL (Webhook を使う場合は必須)
+   *
+   * @minLength 1
+   */
   webhook_url?: string
-  /** @minLength 1 */
+  /**
+   * Discord の Bot トークン (Bot を使う場合は必須)
+   *
+   * @minLength 1
+   */
   token?: string
-  /** @minLength 1 */
+  /**
+   * Discord のチャンネル ID (Bot を使う場合は必須)
+   *
+   * @minLength 1
+   */
   channel_id?: string
 }
 
 export interface Configuration {
-  /** Discord の通知先 */
+  /** Discord の Webhook URL または Bot トークン */
   discord: DiscordFields &
     ({ webhook_url: string } | { token: string; channel_id: string })
 }
