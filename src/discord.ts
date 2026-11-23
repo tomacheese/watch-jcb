@@ -94,7 +94,7 @@ export async function sendDiscordMessage(
         embeds: embed ? [embed] : undefined,
       }),
     })
-    if (response.status !== 204) {
+    if (!response.ok) {
       throw new Error(`Discord webhook failed (${response.status})`)
     }
     return
